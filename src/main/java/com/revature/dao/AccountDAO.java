@@ -57,7 +57,7 @@ public class AccountDAO implements IAccountDAO{
 			statement.setBoolean(++index, a.isApproved());
 			statement.setBoolean(++index, a.isCanceled());
 			
-			System.out.println("statement:" + statement);
+			
 			
 			statement.execute();
 			return true;

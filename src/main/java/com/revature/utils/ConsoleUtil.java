@@ -94,6 +94,7 @@ public class ConsoleUtil {
 		String state = scan.nextLine();
 		System.out.println("What is the zip code for that area?");
 		int zipCode = scan.nextInt();
+		scan.nextLine();
 		
 		
 		List<Customer> list = cs.findAll();
@@ -104,7 +105,7 @@ public class ConsoleUtil {
 		
 		Account account = new Account(id, 0.0,0.0, 0.0, 0.0, false, false);
 		Customer customer = new Customer(id, firstName, lastName, password, phone, streetAddress, city, state, zipCode, account);
-		
+		System.out.println("This is your customer id: " + id + " and your password: " + password);
 		boolean accountWasAdded = as.addAccount(account);
 		boolean customerWasAdded = cs.addCustomer(customer);
 		
@@ -493,8 +494,10 @@ public class ConsoleUtil {
 		
 		Account account = as.findByAccountNumber(accountNumber);
 		System.out.println(account);
+		
 		if (account.isCanceled()) {
 			System.out.println("You cannot make any transfers, this account has been canceled.");
+			adminMenu();
 			return;
 		}
 		
@@ -546,6 +549,7 @@ public class ConsoleUtil {
 		
 		if (account.isCanceled()) {
 			System.out.println("You cannot make any withdrawals, this account has been canceled.");
+			adminMenu();
 			return;
 		}
 		
@@ -598,6 +602,7 @@ public class ConsoleUtil {
 		
 		if (account.isCanceled()) {
 			System.out.println("You cannot make any deposits, this account has been canceled.");
+			adminMenu();
 			return;
 		}
 		
