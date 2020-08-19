@@ -113,12 +113,12 @@ public class ConsoleUtil {
 	
 	private void customerMenu() {
 		System.out.println("Welcome to the customer menu! What would you like to do today?");
-		System.out.println("[1] Update personal information. \n "
-				+ "[2] View account information. \n "
-				+ "[3] Make a deposit. \n "
-				+ "[4] Make a withdrawal. \n "
-				+ "[5] Transfer funds. \n "
-				+ "[6] I'm all done, I would like to leave! \n ");
+		System.out.println("[1] Update personal information. \n"
+				+ "[2] View account information. \n"
+				+ "[3] Make a deposit. \n"
+				+ "[4] Make a withdrawal. \n"
+				+ "[5] Transfer funds. \n"
+				+ "[6] I'm all done, I would like to leave! \n");
 		String menuAnswer = scan.nextLine();
 		menuSwitch(menuAnswer);
 		
@@ -169,6 +169,10 @@ public class ConsoleUtil {
 		if (tansferAnswer.toLowerCase().equals("check")) {
 			
 			Account account = this.loggedInCustomer.getAccount();
+			if (account.isCanceled()) {
+				System.out.println("You cannot make any transfers, your account has been canceled.You've been logged out.");
+				return;
+			}
 			
 			System.out.println("What is the amount you would like to remove from your checking account?");
 			double checkAmount = scan.nextDouble();
@@ -190,6 +194,10 @@ public class ConsoleUtil {
 			
 			Account account = this.loggedInCustomer.getAccount();
 			
+			if (account.isCanceled()) {
+				System.out.println("You cannot make any transfers, your account has been canceled. You've been logged out.");
+				return;
+			}
 			if (as.transferFromSaveToCheck(account, saveAmount)) {
 				System.out.println("The amount was removed!");
 			} else {
@@ -214,7 +222,10 @@ public class ConsoleUtil {
 		if (withdrawalAnswer.toLowerCase().equals("check")) {
 			
 			Account account = this.loggedInCustomer.getAccount();
-			
+			if (account.isCanceled()) {
+				System.out.println("You cannot make any withdrawls, your account has been canceled. You've been logged out.");
+				return;
+			}
 			System.out.println("What is the amount you would like to remove from your checking account?");
 			double checkAmount = scan.nextDouble();
 			scan.nextLine();
@@ -235,6 +246,10 @@ public class ConsoleUtil {
 			
 			Account account = this.loggedInCustomer.getAccount();
 			
+			if (account.isCanceled()) {
+				System.out.println("You cannot make any withdrawls, your account has been canceled. You've been logged out.");
+				return;
+			}
 			if (as.withdrawSaving(account, saveAmount)) {
 				System.out.println("The amount was removed!");
 			} else {
@@ -303,6 +318,10 @@ public class ConsoleUtil {
 			
 			Account account = this.loggedInCustomer.getAccount();
 			
+			if (account.isCanceled()) {
+				System.out.println("You cannot make any deposits, your account has been canceled. You've been logged out.");
+				return;
+			}
 			System.out.println("What is the amount you would like to add to your checking account?");
 			double checkAmount = scan.nextDouble();
 			scan.nextLine();
@@ -323,6 +342,10 @@ public class ConsoleUtil {
 			
 			Account account = this.loggedInCustomer.getAccount();
 			
+			if (account.isCanceled()) {
+				System.out.println("You cannot make any deposits, your account has been canceled. You've been logged out.");
+				return;
+			}
 			if (as.depositSaving(account, saveAmount)) {
 				System.out.println("The amount went through!");
 			} else {
@@ -355,11 +378,11 @@ public class ConsoleUtil {
 
 	private void employeeMenu() {
 		System.out.println("Welcome to the employee menu!");
-		System.out.println("[1] View all customers. \n "
-				+ "[2] View a specific customer's personal information. \n "
-				+ "[3] View a specific customer's account information. \n "
-				+ "[4] Approve an account. \n "
-				+ "[5] Go to the admin menu. \n "
+		System.out.println("[1] View all customers. \n"
+				+ "[2] View a specific customer's personal information. \n"
+				+ "[3] View a specific customer's account information. \n"
+				+ "[4] Approve an account. \n"
+				+ "[5] Go to the admin menu. \n"
 				+ "[6] I am ready to leave!");
 		String empMenuAnswers = scan.nextLine();
 		employeeSwitch(empMenuAnswers);
@@ -409,11 +432,11 @@ public class ConsoleUtil {
 			return;
 		} 
 		System.out.println("Welcome to the admin menu!");
-		System.out.println("[1] Deposit into an account. \n "
-				+ "[2] Withdrawal from an account. \n "
-				+ "[3] Transfer funds from an account. \n "
-				+ "[4] Cancel an account. \n "
-				+ "[5] I'm ready to leave!. \n ");
+		System.out.println("[1] Deposit into an account. \n"
+				+ "[2] Withdrawal from an account. \n"
+				+ "[3] Transfer funds from an account. \n"
+				+ "[4] Cancel an account. \n"
+				+ "[5] I'm ready to leave!. \n");
 		String adminAnswers = scan.nextLine();
 		adminSwitch(adminAnswers);
 		
@@ -470,6 +493,10 @@ public class ConsoleUtil {
 		
 		Account account = as.findByAccountNumber(accountNumber);
 		System.out.println(account);
+		if (account.isCanceled()) {
+			System.out.println("You cannot make any transfers, this account has been canceled.");
+			return;
+		}
 		
 		System.out.println("Will the transfer be from the checking account or saving account? [check/save]");
 		String tansferAnswer = scan.nextLine();
@@ -517,6 +544,11 @@ public class ConsoleUtil {
 		Account account = as.findByAccountNumber(accountNumber);
 		System.out.println(account);
 		
+		if (account.isCanceled()) {
+			System.out.println("You cannot make any withdrawals, this account has been canceled.");
+			return;
+		}
+		
 		System.out.println("Will the withdrawal be from the checking account or saving account? [check/save]");
 		String accountType = scan.nextLine();
 		if (accountType.toLowerCase().equals("check")) {
@@ -563,6 +595,11 @@ public class ConsoleUtil {
 		
 		Account account = as.findByAccountNumber(accountNumber);
 		System.out.println(account);
+		
+		if (account.isCanceled()) {
+			System.out.println("You cannot make any deposits, this account has been canceled.");
+			return;
+		}
 		
 		System.out.println("Will the deposit be into the checking account or saving account? [check/save]");
 		String accountType = scan.nextLine();

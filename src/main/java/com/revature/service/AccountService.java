@@ -20,6 +20,10 @@ public class AccountService {
 			log.warn("You cannot give a number less than or equal to 0.");
 			return false;
 		} 
+		if (account.isCanceled()) {
+			log.warn("You cannot make a deposit, your account has been canceled.");
+			return false;
+		}
 		
 		double newBalance = amount + account.getCheckingsBalance();
 		account.setCheckingsBalance(newBalance);
@@ -38,6 +42,11 @@ public class AccountService {
 			return false;
 		}
 		
+		if (account.isCanceled()) {
+			log.warn("You cannot make a deposit, your account has been canceled.");
+			return false;
+		}
+		
 		double newBalance = amount + account.getSavingsBalance();
 		account.setSavingsBalance(newBalance);
 		account.setPreviousSavingTransaction(amount);
@@ -53,6 +62,11 @@ public class AccountService {
 			log.warn("You cannot give a number less than or equal to 0.");
 			return false;
 		}
+		
+		if (account.isCanceled()) {
+			log.warn("You cannot make a withdrawal, your account has been canceled.");
+			return false;
+		}
 		double newBalance = account.getCheckingsBalance() - amount;
 		account.setCheckingsBalance(newBalance);
 		account.setPreviousCheckingTransaction(-amount);
@@ -63,6 +77,11 @@ public class AccountService {
 	public boolean withdrawSaving(Account account, double amount) {
 		if (amount <= 0.0) {
 			log.warn("You cannot give a number less than or equal to 0.");
+			return false;
+		}
+		
+		if (account.isCanceled()) {
+			log.warn("You cannot make a withdrawal, your account has been canceled.");
 			return false;
 		}
 		double newBalance = account.getSavingsBalance() - amount;
@@ -141,6 +160,10 @@ public class AccountService {
 			return false;
 		}
 		
+		if (account.isCanceled()) {
+			log.warn("You cannot make any transfers, your account has been canceled.");
+			return false;
+		}
 		double newCheckBalance = account.getCheckingsBalance() - amount;
 		double newSaveBalance = account.getSavingsBalance() + amount;
 		account.setCheckingsBalance(newCheckBalance);
@@ -152,6 +175,11 @@ public class AccountService {
 	public boolean transferFromSaveToCheck(Account account, double amount) {
 		if(amount > account.getSavingsBalance()) {
 			log.warn("ERROR. Transfer denied due to insuffiecient funds.");
+			return false;
+		}
+		
+		if (account.isCanceled()) {
+			log.warn("You cannot make any transfers, your account has been canceled.");
 			return false;
 		}
 		
